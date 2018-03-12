@@ -16,6 +16,7 @@ import com.itis.android.lessontwo.R;
 import com.itis.android.lessontwo.model.creators.Creators;
 import com.itis.android.lessontwo.ui.base.BaseActivity;
 import com.itis.android.lessontwo.utils.ImageLoadHelper;
+import com.squareup.picasso.Picasso;
 
 import static com.itis.android.lessontwo.utils.Constants.ID_KEY;
 import static com.itis.android.lessontwo.utils.Constants.NAME_KEY;
@@ -25,12 +26,11 @@ import static com.itis.android.lessontwo.utils.Constants.NAME_KEY;
  */
 
 public class CreatorsActivity extends BaseActivity implements CreatorContract.View {
+
     private CollapsingToolbarLayout collapsingToolbar;
     private Toolbar toolbar;
     private ImageView ivCover;
     private TextView tvName;
-    private TextView tvPrice;
-    private TextView tvPages;
 
     CreatorContract.Presenter presenter;
 
@@ -40,6 +40,7 @@ public class CreatorsActivity extends BaseActivity implements CreatorContract.Vi
         intent.putExtra(ID_KEY, creator.getId());
         activity.startActivity(intent);
     }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,12 +78,16 @@ public class CreatorsActivity extends BaseActivity implements CreatorContract.Vi
     }
 
     public void showCreators(Creators creators) {
-        ImageLoadHelper.loadPicture(ivCover, String.format("%s.%s", creators.getImage().getPath(),
-                creators.getImage().getExtension()));
         if(creators.getFullName() != null){
            tvName.setText(creators.getFullName().trim());
         }
-
+        if (creators.getImage() != null) {
+//            ImageLoadHelper.loadPicture(ivCover, String.format("%s.%s", creators.getImage().getPath(),
+//                    creators.getImage().getExtension()));
+            Picasso.with(this).load(R.drawable.the_homak).into(ivCover);
+        } else {
+            ImageLoadHelper.loadPictureByDrawable(ivCover, R.drawable.image_error_marvel_logo);
+        }
     }
 }
 
